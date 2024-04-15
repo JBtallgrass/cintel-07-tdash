@@ -1,0 +1,29 @@
+/* styles.css */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f8;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar {
+    background-color: #ffffff;
+    padding: 15px;
+    border-right: 2px solid #dee2e6;
+}
+
+.card {
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+a {
+    color: #0056b3;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #004494;
+}

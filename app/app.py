@@ -1,14 +1,13 @@
 import seaborn as sns
 from faicons import icon_svg
-
+from pathlib import Path
 from shiny import reactive
 from shiny.express import input, render, ui
 import palmerpenguins 
 
 df = palmerpenguins.load_penguins()
 
-ui.page_opts(title="Penguins dashboard", fillable=True)
-
+ui.page_opts(title=" JB Penguins dashboard", fillable=True)
 
 with ui.sidebar(title="Filter controls"):
     ui.input_slider("mass", "Mass", 2000, 6000, 6000)
@@ -99,8 +98,7 @@ with ui.layout_columns():
             return render.DataGrid(filtered_df()[cols], filters=True)
 
 
-# ui.include_css(app_dir / "styles.css")
-
+ui.include_css(app_dir / "styles.css")
 
 @reactive.calc
 def filtered_df():
