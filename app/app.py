@@ -22,7 +22,7 @@ with ui.sidebar(title="Filter controls"):
     ui.h6("Links")
     ui.a(
         "GitHub Source",
-        href="https://github.com/denisecase/cintel-07-tdash",
+        href="https://github.com/jbtallgrass/cintel-07-tdash",
         target="_blank",
     )
     ui.a(
