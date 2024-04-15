@@ -9,7 +9,7 @@ df = palmerpenguins.load_penguins()
 
 ui.page_opts(title=" JB Penguins dashboard", fillable=True)
 
-with ui.sidebar(title="Filter controls"):
+with ui.sidebar(title=" JB Filter controls"):
     ui.input_slider("mass", "Mass", 2000, 6000, 6000)
     ui.input_checkbox_group(
         "species",
@@ -18,7 +18,7 @@ with ui.sidebar(title="Filter controls"):
         selected=["Adelie", "Gentoo", "Chinstrap"],
     )
     ui.hr()
-    ui.h6("Links")
+    ui.h6(" JB App Links")
     ui.a(
         "GitHub Source",
         href="https://github.com/jbtallgrass/cintel-07-tdash",
