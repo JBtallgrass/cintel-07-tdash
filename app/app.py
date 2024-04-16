@@ -1,14 +1,18 @@
+import plotly.express as px
 import seaborn as sns
 from faicons import icon_svg
 from pathlib import Path
 from shiny import reactive
 from shiny.express import input, render, ui
-import palmerpenguins 
+import palmerpenguins
+from shinywidgets import render_plotly 
 
 df = palmerpenguins.load_penguins()
 
 ui.page_opts(title=" JB Penguins dashboard", fillable=True)
+color_map = {"Adelie": "blue", "Gentoo": "green", "Chinstrap": "red"}
 
+# sidebar for user interaction
 with ui.sidebar(title=" JB Filter controls"):
     ui.input_slider("mass", "Mass", 2000, 6000, 6000)
     ui.input_checkbox_group(
@@ -16,6 +20,15 @@ with ui.sidebar(title=" JB Filter controls"):
         "Species",
         ["Adelie", "Gentoo", "Chinstrap"],
         selected=["Adelie", "Gentoo", "Chinstrap"],
+    )
+         
+   # Use ui.input_checkbox_group() to create a checkbox group input to filter the islands
+    ui.input_checkbox_group(
+        "selected_islands",
+        "Islands in Graphs",
+        ["Torgersen", "Biscoe", "Dream"],
+        selected=["Torgersen", "Biscoe", "Dream"],
+        inline=True,
     )
     ui.hr()
     ui.h6(" JB App Links")
@@ -69,22 +82,21 @@ with ui.layout_column_wrap(fill=False):
         def bill_depth():
             return f"{filtered_df()['bill_depth_mm'].mean():.1f} mm"
 
-
 with ui.layout_columns():
     with ui.card(full_screen=True):
-        ui.card_header("Bill length and depth")
+     ui.h3("Bill length and depth")
 
-        @render.plot
-        def length_depth():
-            return sns.scatterplot(
-                data=filtered_df(),
-                x="bill_length_mm",
-                y="bill_depth_mm",
-                hue="species",
+     @render.plot
+     def length_depth():
+        return sns.scatterplot(
+            data=filtered_df(),
+            x="bill_length_mm",
+            y="bill_depth_mm",
+            hue="species",
             )
 
     with ui.card(full_screen=True):
-        ui.card_header("Penguin data")
+        ui.h3("Penguin data")
 
         @render.data_frame
         def summary_statistics():
@@ -97,7 +109,25 @@ with ui.layout_columns():
             ]
             return render.DataGrid(filtered_df()[cols], filters=True)
 
+    with ui.card(full_screen=True):
+        ui.h3("Penguin Population by Island")
 
+        @render_plotly()
+        def island_population_chart():
+            filtered = filtered_df()
+            island_counts = filtered["island"].value_counts().reset_index()
+            island_counts.columns = ["island", "count"]
+            return px.bar(
+                island_counts,
+                x="island",
+                y="count",
+                title="Penguin Population by Island",
+                labels={"count": "Number of Penguins"},
+                color="island",
+                color_discrete_map=color_map,
+            )
+
+    
 # ui.include_css(app_dir / "styles.css")
 
 @reactive.calc
